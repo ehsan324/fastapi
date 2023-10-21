@@ -4,7 +4,7 @@ from enum import Enum
 app = FastAPI()
 
 @app.get("/index")
-def info():
+def index():
     return "hello guys"
 
 class typeBlog(str, Enum):

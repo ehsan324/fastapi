@@ -1,20 +1,21 @@
-from fastapi import FastAPI, Response, status
+from fastapi import APIRouter, status, Response
 from enum import Enum
 
+router = APIRouter(prefix='/blog', tags=['blog'])
 
-app = FastAPI()
 
 class typeBlog(str, Enum):
     mes1 = "mes1"
     mes2 = "mes2"
     mes3 = "mes3"
 
-@app.get("/blog/{id}/comments/{comment_id}", tags=['blog', 'comment'])
-def get_comment(id:int, comment_id:int, valid:bool = True, username:str = None):
+
+@router.get("/{id}/comments/{comment_id}", tags=['comment'])
+def get_comment(id:int, comment_id:int, valid:bool = True, username: str = None):
     return {"message": f"blog id {id} comment id {comment_id} {valid=} {username}"}
 
 
-@app.get('blog/all', tags=['blog'], summary="recieve imformation")
+@router.get("/all",summary="recieve imformation")
 def get_blogs(page:int = None, page_size:str = None):
     # this is for typing the description
     """
@@ -23,10 +24,9 @@ def get_blogs(page:int = None, page_size:str = None):
     """
     return {"message": f"{page=} -- {page_size}"}
 
-@app.get('/blog/type/{type}')
-def get_type_blog(type: typeBlog):
-    return {"messge": f"you are on {type}"}
-@app.get("/blog/info", status_code=status.HTTP_200_OK)
+
+
+@router.get("/info", status_code=status.HTTP_200_OK)
 def info(pagename: str, pagenum: int, response: Response):
     if pagenum > 10:
         response.status_code = status.HTTP_404_NOT_FOUND

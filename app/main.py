@@ -2,6 +2,6 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/post")
+@app.get("/get")
 def simp():
     return "hello"
